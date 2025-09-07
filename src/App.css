@@ -1,3 +1,54 @@
+import {Button} from 'react-bootstrap';
+
+export function App(): JSX.Element {
+    return <h1>Luke's App</h1>;
+}
+export function App(): JSX.Element {
+    return <div>
+        <h1>Hello World</h1>
+        <img src="../assets/images/pet-ada.jpg" alt="A picture of Dr. Bart's dog Ada" />
+    </div>;
+}
+export function App(): JSX.Element {
+    return <div>
+        Unordered List:
+        <ul>
+            <li>First thing</li>
+            <li>Another thing</li>
+            <li>A third item</li>
+        </ul>
+        Ordered List:
+        <ol>
+            <li>First thing</li>
+            <li>Another thing</li>
+            <li>A third item</li>
+        </ol>
+    </div>;
+}
+export function App(): JSX.Element {
+    return <div>
+        <Button onClick={ () => { console.log("Hello World!") } }>Hello World</Button>
+    </div>;
+}
+export function App(): JSX.Element {
+    return <div>
+        <Container>
+            <Row>
+                <Col>First column.
+                width: 50%;
+                height: 50%;
+                background-color: red;
+                </Col>
+                <Col>
+                    Second column.
+                    You can put whatever you want in here, and it will be on the right side.
+                    Maybe try adding an image?
+                </Col>
+            </Row>
+        </Container>
+    </div>;
+}
+
 .App {
     text-align: center;
 }
