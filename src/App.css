@@ -3,12 +3,12 @@ import {Button} from 'react-bootstrap';
 export function App(): JSX.Element {
     return <h1>Luke's App</h1>;
 
-    return <div>
+    
         <h1>Hello World</h1>
         <img src="../assets/images/pet-ada.jpg" alt="A picture of Dr. Bart's dog Ada" />
-    </div>;
+    
 
-    return <div>
+    
         Unordered List:
         <ul>
             <li>First thing</li>
@@ -21,13 +21,13 @@ export function App(): JSX.Element {
             <li>Another thing</li>
             <li>A third item</li>
         </ol>
-    </div>;    
+       
 
-    return <div>
+    
         <Button onClick={ () => { console.log("Hello World!") } }>Hello World</Button>
-    </div>;
+    
 
-    return <div>
+    
         <Container>
             <Row>
                 <Col>First column.
@@ -42,7 +42,7 @@ export function App(): JSX.Element {
                 </Col>
             </Row>
         </Container>
-    </div>;
+    
 }
 
 
