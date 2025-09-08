@@ -2,14 +2,12 @@ import {Button} from 'react-bootstrap';
 
 export function App(): JSX.Element {
     return <h1>Luke's App</h1>;
-}
-export function App(): JSX.Element {
+
     return <div>
         <h1>Hello World</h1>
         <img src="../assets/images/pet-ada.jpg" alt="A picture of Dr. Bart's dog Ada" />
     </div>;
-}
-export function App(): JSX.Element {
+
     return <div>
         Unordered List:
         <ul>
@@ -23,14 +21,12 @@ export function App(): JSX.Element {
             <li>Another thing</li>
             <li>A third item</li>
         </ol>
-    </div>;
-}
-export function App(): JSX.Element {
+    </div>;    
+
     return <div>
         <Button onClick={ () => { console.log("Hello World!") } }>Hello World</Button>
     </div>;
-}
-export function App(): JSX.Element {
+
     return <div>
         <Container>
             <Row>
@@ -48,6 +44,7 @@ export function App(): JSX.Element {
         </Container>
     </div>;
 }
+
 
 .App {
     text-align: center;
