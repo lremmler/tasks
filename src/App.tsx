@@ -29,7 +29,7 @@ function App(): React.JSX.Element {
                     console.log("Hello World!");
                 }}
             >
-                Hello World
+                Log Hello World
             </Button>
             <Container>
                 <Row>
