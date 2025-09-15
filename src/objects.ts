@@ -8,9 +8,9 @@ import { Question, QuestionType } from "./interfaces/question";
 export function makeBlankQuestion(
     id: number,
     name: string,
-    type: QuestionType,
+    type: QuestionType
 ): Question {
-    return {
+    const question: Question = {
         id,
         name,
         type,
@@ -18,8 +18,9 @@ export function makeBlankQuestion(
         expected: "",
         options: [],
         points: 1,
-        published: false,
+        published: false
     };
+    return question;
 }
 
 /**
@@ -79,13 +80,13 @@ export function toShortForm(question: Question): string {
  */
 export function toMarkdown(question: Question): string {
     let markdown = `# ${question.name}\n${question.body}`;
-
+    
     if (question.type === "multiple_choice_question") {
-        question.options.forEach((option) => {
+        for (const option of question.options) {
             markdown += `\n- ${option}`;
-        });
+        }
     }
-
+    
     return markdown;
 }
 
@@ -94,10 +95,17 @@ export function toMarkdown(question: Question): string {
  * `newName`.
  */
 export function renameQuestion(question: Question, newName: string): Question {
-    return {
-        ...question,
+    const newQuestion: Question = {
+        id: question.id,
         name: newName,
+        type: question.type,
+        body: question.body,
+        expected: question.expected,
+        options: [...question.options],
+        points: question.points,
+        published: question.published
     };
+    return newQuestion;
 }
 
 /**
@@ -106,10 +114,17 @@ export function renameQuestion(question: Question, newName: string): Question {
  * published; if it was published, now it should be not published.
  */
 export function publishQuestion(question: Question): Question {
-    return {
-        ...question,
-        published: !question.published,
+    const newQuestion: Question = {
+        id: question.id,
+        name: question.name,
+        type: question.type,
+        body: question.body,
+        expected: question.expected,
+        options: [...question.options],
+        points: question.points,
+        published: !question.published
     };
+    return newQuestion;
 }
 
 /**
@@ -119,16 +134,17 @@ export function publishQuestion(question: Question): Question {
  * The `published` field should be reset to false.
  */
 export function duplicateQuestion(id: number, oldQuestion: Question): Question {
-    return {
+    const newQuestion: Question = {
         id: id,
         name: `Copy of ${oldQuestion.name}`,
         type: oldQuestion.type,
         body: oldQuestion.body,
         expected: oldQuestion.expected,
-        options: [...oldQuestion.options], // Create a copy of the array
+        options: [...oldQuestion.options],
         points: oldQuestion.points,
-        published: false,
+        published: false
     };
+    return newQuestion;
 }
 
 /**
@@ -139,10 +155,17 @@ export function duplicateQuestion(id: number, oldQuestion: Question): Question {
  * Check out the subsection about "Nested Fields" for more information.
  */
 export function addOption(question: Question, newOption: string): Question {
-    return {
-        ...question,
+    const newQuestion: Question = {
+        id: question.id,
+        name: question.name,
+        type: question.type,
+        body: question.body,
+        expected: question.expected,
         options: [...question.options, newOption],
+        points: question.points,
+        published: question.published
     };
+    return newQuestion;
 }
 
 /**
@@ -157,16 +180,17 @@ export function mergeQuestion(
     id: number,
     name: string,
     contentQuestion: Question,
-    { points }: { points: number },
+    { points }: { points: number }
 ): Question {
-    return {
+    const newQuestion: Question = {
         id: id,
         name: name,
         type: contentQuestion.type,
         body: contentQuestion.body,
         expected: contentQuestion.expected,
-        options: [...contentQuestion.options], // Create a copy of the array
+        options: [...contentQuestion.options],
         points: points,
-        published: false,
+        published: false
     };
+    return newQuestion;
 }
