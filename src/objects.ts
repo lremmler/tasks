@@ -8,7 +8,7 @@ import { Question, QuestionType } from "./interfaces/question";
 export function makeBlankQuestion(
     id: number,
     name: string,
-    type: QuestionType
+    type: QuestionType,
 ): Question {
     return {
         id,
@@ -18,7 +18,7 @@ export function makeBlankQuestion(
         expected: "",
         options: [],
         points: 1,
-        published: false
+        published: false,
     };
 }
 
@@ -30,9 +30,9 @@ export function makeBlankQuestion(
  * HINT: Look up the `trim` and `toLowerCase` functions.
  */
 export function isCorrect(question: Question, answer: string): boolean {
-    const trimmedAnswer = answer.trim().toLowerCase();
-    const trimmedExpected = question.expected.trim().toLowerCase();
-    return trimmedAnswer === trimmedExpected;
+    const cleanAnswer = answer.trim().toLowerCase();
+    const cleanExpected = question.expected.trim().toLowerCase();
+    return cleanAnswer === cleanExpected;
 }
 
 /**
@@ -44,10 +44,9 @@ export function isCorrect(question: Question, answer: string): boolean {
 export function isValid(question: Question, answer: string): boolean {
     if (question.type === "short_answer_question") {
         return true;
-    } else if (question.type === "multiple_choice_question") {
-        return question.options.includes(answer);
     }
-    return false;
+    // For multiple_choice_question, check if answer is in options
+    return question.options.includes(answer);
 }
 
 /**
@@ -79,15 +78,15 @@ export function toShortForm(question: Question): string {
  * Check the unit tests for more examples of what this looks like!
  */
 export function toMarkdown(question: Question): string {
-    let result = `# ${question.name}\n${question.body}`;
-    
+    let markdown = `# ${question.name}\n${question.body}`;
+
     if (question.type === "multiple_choice_question") {
-        question.options.forEach(option => {
-            result += `\n- ${option}`;
+        question.options.forEach((option) => {
+            markdown += `\n- ${option}`;
         });
     }
-    
-    return result;
+
+    return markdown;
 }
 
 /**
@@ -97,7 +96,7 @@ export function toMarkdown(question: Question): string {
 export function renameQuestion(question: Question, newName: string): Question {
     return {
         ...question,
-        name: newName
+        name: newName,
     };
 }
 
@@ -109,7 +108,7 @@ export function renameQuestion(question: Question, newName: string): Question {
 export function publishQuestion(question: Question): Question {
     return {
         ...question,
-        published: !question.published
+        published: !question.published,
     };
 }
 
@@ -121,10 +120,14 @@ export function publishQuestion(question: Question): Question {
  */
 export function duplicateQuestion(id: number, oldQuestion: Question): Question {
     return {
-        ...oldQuestion,
-        id,
+        id: id,
         name: `Copy of ${oldQuestion.name}`,
-        published: false
+        type: oldQuestion.type,
+        body: oldQuestion.body,
+        expected: oldQuestion.expected,
+        options: [...oldQuestion.options], // Create a copy of the array
+        points: oldQuestion.points,
+        published: false,
     };
 }
 
@@ -138,7 +141,7 @@ export function duplicateQuestion(id: number, oldQuestion: Question): Question {
 export function addOption(question: Question, newOption: string): Question {
     return {
         ...question,
-        options: [...question.options, newOption]
+        options: [...question.options, newOption],
     };
 }
 
@@ -154,16 +157,16 @@ export function mergeQuestion(
     id: number,
     name: string,
     contentQuestion: Question,
-    { points }: { points: number }
+    { points }: { points: number },
 ): Question {
     return {
-        id,
-        name,
-        body: contentQuestion.body,
+        id: id,
+        name: name,
         type: contentQuestion.type,
-        options: [...contentQuestion.options],
+        body: contentQuestion.body,
         expected: contentQuestion.expected,
-        points,
-        published: false
+        options: [...contentQuestion.options], // Create a copy of the array
+        points: points,
+        published: false,
     };
 }
