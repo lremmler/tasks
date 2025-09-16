@@ -10,7 +10,7 @@ export function makeBlankQuestion(
     name: string,
     type: QuestionType
 ): Question {
-    return {
+    const question: Question = {
         id,
         name,
         type,
@@ -20,6 +20,7 @@ export function makeBlankQuestion(
         points: 1,
         published: false
     };
+    return question;
 }
 
 /**
@@ -30,7 +31,9 @@ export function makeBlankQuestion(
  * HINT: Look up the `trim` and `toLowerCase` functions.
  */
 export function isCorrect(question: Question, answer: string): boolean {
-    return answer.trim().toLowerCase() === question.expected.trim().toLowerCase();
+    const cleanAnswer = answer.trim().toLowerCase();
+    const cleanExpected = question.expected.trim().toLowerCase();
+    return cleanAnswer === cleanExpected;
 }
 
 /**
@@ -54,7 +57,8 @@ export function isValid(question: Question, answer: string): boolean {
  * name "My First Question" would become "9: My First Q".
  */
 export function toShortForm(question: Question): string {
-    return `${question.id}: ${question.name.substring(0, 10)}`;
+    const shortName = question.name.substring(0, 10);
+    return `${question.id}: ${shortName}`;
 }
 
 /**
@@ -78,9 +82,9 @@ export function toMarkdown(question: Question): string {
     let result = `# ${question.name}\n${question.body}`;
     
     if (question.type === "multiple_choice_question") {
-        question.options.forEach(option => {
+        for (const option of question.options) {
             result += `\n- ${option}`;
-        });
+        }
     }
     
     return result;
@@ -92,8 +96,14 @@ export function toMarkdown(question: Question): string {
  */
 export function renameQuestion(question: Question, newName: string): Question {
     return {
-        ...question,
-        name: newName
+        id: question.id,
+        name: newName,
+        type: question.type,
+        body: question.body,
+        expected: question.expected,
+        options: [...question.options],
+        points: question.points,
+        published: question.published
     };
 }
 
@@ -104,7 +114,13 @@ export function renameQuestion(question: Question, newName: string): Question {
  */
 export function publishQuestion(question: Question): Question {
     return {
-        ...question,
+        id: question.id,
+        name: question.name,
+        type: question.type,
+        body: question.body,
+        expected: question.expected,
+        options: [...question.options],
+        points: question.points,
         published: !question.published
     };
 }
@@ -117,9 +133,13 @@ export function publishQuestion(question: Question): Question {
  */
 export function duplicateQuestion(id: number, oldQuestion: Question): Question {
     return {
-        ...oldQuestion,
-        id,
+        id: id,
         name: `Copy of ${oldQuestion.name}`,
+        type: oldQuestion.type,
+        body: oldQuestion.body,
+        expected: oldQuestion.expected,
+        options: [...oldQuestion.options],
+        points: oldQuestion.points,
         published: false
     };
 }
@@ -133,8 +153,14 @@ export function duplicateQuestion(id: number, oldQuestion: Question): Question {
  */
 export function addOption(question: Question, newOption: string): Question {
     return {
-        ...question,
-        options: [...question.options, newOption]
+        id: question.id,
+        name: question.name,
+        type: question.type,
+        body: question.body,
+        expected: question.expected,
+        options: [...question.options, newOption],
+        points: question.points,
+        published: question.published
     };
 }
 
@@ -153,13 +179,13 @@ export function mergeQuestion(
     { points }: { points: number }
 ): Question {
     return {
-        id,
-        name,
+        id: id,
+        name: name,
         type: contentQuestion.type,
         body: contentQuestion.body,
         expected: contentQuestion.expected,
         options: [...contentQuestion.options],
-        points,
+        points: points,
         published: false
     };
 }
