@@ -19,7 +19,7 @@ export function makeBlankQuestion(
         options: [],
         points: 1,
         published: false,
-    };
+    } as Question;
     return question;
 }
 
@@ -97,7 +97,7 @@ export function toMarkdown(question: Question): string {
  * `newName`.
  */
 export function renameQuestion(question: Question, newName: string): Question {
-    const newQuestion: Question = {
+    return {
         id: question.id,
         name: newName,
         type: question.type,
@@ -106,8 +106,7 @@ export function renameQuestion(question: Question, newName: string): Question {
         options: [...question.options],
         points: question.points,
         published: question.published,
-    };
-    return newQuestion;
+    } as Question;
 }
 
 /**
@@ -116,7 +115,7 @@ export function renameQuestion(question: Question, newName: string): Question {
  * published; if it was published, now it should be not published.
  */
 export function publishQuestion(question: Question): Question {
-    const newQuestion: Question = {
+    return {
         id: question.id,
         name: question.name,
         type: question.type,
@@ -125,8 +124,7 @@ export function publishQuestion(question: Question): Question {
         options: [...question.options],
         points: question.points,
         published: !question.published,
-    };
-    return newQuestion;
+    } as Question;
 }
 
 /**
@@ -136,7 +134,7 @@ export function publishQuestion(question: Question): Question {
  * The `published` field should be reset to false.
  */
 export function duplicateQuestion(id: number, oldQuestion: Question): Question {
-    const newQuestion: Question = {
+    return {
         id: id,
         name: `Copy of ${oldQuestion.name}`,
         type: oldQuestion.type,
@@ -145,8 +143,7 @@ export function duplicateQuestion(id: number, oldQuestion: Question): Question {
         options: [...oldQuestion.options],
         points: oldQuestion.points,
         published: false,
-    };
-    return newQuestion;
+    } as Question;
 }
 
 /**
@@ -157,7 +154,7 @@ export function duplicateQuestion(id: number, oldQuestion: Question): Question {
  * Check out the subsection about "Nested Fields" for more information.
  */
 export function addOption(question: Question, newOption: string): Question {
-    const newQuestion: Question = {
+    return {
         id: question.id,
         name: question.name,
         type: question.type,
@@ -166,8 +163,7 @@ export function addOption(question: Question, newOption: string): Question {
         options: [...question.options, newOption],
         points: question.points,
         published: question.published,
-    };
-    return newQuestion;
+    } as Question;
 }
 
 /**
@@ -184,7 +180,7 @@ export function mergeQuestion(
     contentQuestion: Question,
     { points }: { points: number },
 ): Question {
-    const newQuestion: Question = {
+    return {
         id: id,
         name: name,
         type: contentQuestion.type,
@@ -193,6 +189,5 @@ export function mergeQuestion(
         options: [...contentQuestion.options],
         points: points,
         published: false,
-    };
-    return newQuestion;
+    } as Question;
 }
