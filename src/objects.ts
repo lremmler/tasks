@@ -24,7 +24,9 @@ export function makeBlankQuestion(
  * Check if an answer is correct
  */
 export function isCorrect(question: Question, answer: string): boolean {
-    return answer.trim().toLowerCase() === question.expected.trim().toLowerCase();
+    const cleanAnswer: string = answer.trim().toLowerCase();
+    const cleanExpected: string = question.expected.trim().toLowerCase();
+    return cleanAnswer === cleanExpected;
 }
 
 /**
@@ -81,7 +83,7 @@ export function duplicateQuestion(id: number, oldQuestion: Question): Question {
         id,
         name: `Copy of ${oldQuestion.name}`,
         published: false,
-        options: [...oldQuestion.options],
+        options: [...(oldQuestion.options as string[])],
     };
 }
 
@@ -89,7 +91,7 @@ export function duplicateQuestion(id: number, oldQuestion: Question): Question {
  * Add option to a question
  */
 export function addOption(question: Question, newOption: string): Question {
-    return { ...question, options: [...question.options, newOption] };
+    return { ...question, options: [...(question.options as string[]), newOption] };
 }
 
 /**
@@ -107,6 +109,6 @@ export function mergeQuestion(
         name,
         points,
         published: false,
-        options: [...contentQuestion.options],
+        options: [...(contentQuestion.options as string[])],
     };
 }
