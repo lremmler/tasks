@@ -61,14 +61,14 @@ export function toMarkdown(question: Question): string {
 }
 
 /**
- * Rename a question.
+ * Rename a question (immutable).
  */
 export function renameQuestion(question: Question, newName: string): Question {
     return { ...question, name: newName };
 }
 
 /**
- * Toggle publish status.
+ * Toggle publish status (immutable).
  */
 export function publishQuestion(question: Question): Question {
     return { ...question, published: !question.published };
@@ -78,17 +78,18 @@ export function publishQuestion(question: Question): Question {
  * Duplicate a question with a new id and reset published to false.
  */
 export function duplicateQuestion(newId: number, question: Question): Question {
+    const copiedOptions: string[] = [...question.options];
     return {
         ...question,
         id: newId,
         name: `Copy of ${question.name}`,
         published: false,
-        options: [...question.options], // explicitly typed as string[]
+        options: copiedOptions,
     };
 }
 
 /**
- * Add an option to a question.
+ * Add an option to a multiple-choice question.
  */
 export function addOption(question: Question, option: string): Question {
     const safeOptions: string[] = [...question.options, option];
@@ -96,7 +97,7 @@ export function addOption(question: Question, option: string): Question {
 }
 
 /**
- * Merge two questions.
+ * Merge two questions: use content from the first, points from the second.
  */
 export function mergeQuestion(
     id: number,
