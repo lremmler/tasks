@@ -25,8 +25,10 @@ export function makeBlankQuestion(
  */
 export function isCorrect(question: Question, answer: string): boolean {
     const normalized: string = answer.trim().toLowerCase();
-    const expected: string = question.expected.trim().toLowerCase();
-    return normalized === expected;
+    if (question.type === "short_answer_question") {
+        return question.expected.trim().toLowerCase() === normalized;
+    }
+    return question.expected === answer;
 }
 
 /**
@@ -81,7 +83,7 @@ export function duplicateQuestion(newId: number, question: Question): Question {
         id: newId,
         name: `Copy of ${question.name}`,
         published: false,
-        options: [...question.options],
+        options: [...question.options], // explicitly typed as string[]
     };
 }
 
@@ -89,7 +91,8 @@ export function duplicateQuestion(newId: number, question: Question): Question {
  * Add an option to a question.
  */
 export function addOption(question: Question, option: string): Question {
-    return { ...question, options: [...question.options, option] };
+    const safeOptions: string[] = [...question.options, option];
+    return { ...question, options: safeOptions };
 }
 
 /**
@@ -101,12 +104,13 @@ export function mergeQuestion(
     contentQuestion: Question,
     pointsQuestion: Question,
 ): Question {
+    const safeOptions: string[] = [...contentQuestion.options];
     return {
         id,
         name,
         body: contentQuestion.body,
         type: contentQuestion.type,
-        options: [...contentQuestion.options],
+        options: safeOptions,
         expected: contentQuestion.expected,
         points: pointsQuestion.points,
         published: false,
