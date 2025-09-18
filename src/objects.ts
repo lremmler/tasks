@@ -21,21 +21,16 @@ export function makeBlankQuestion(
 }
 
 /**
- * Return true if the provided answer is correct for the question.
- * Comparisons are case-insensitive for short_answer_question and strict for multiple_choice_question.
+ * Check if an answer is correct.
  */
 export function isCorrect(question: Question, answer: string): boolean {
-    const normalized = answer.trim().toLowerCase();
-    if (question.type === "short_answer_question") {
-        return question.expected.trim().toLowerCase() === normalized;
-    }
-    return question.expected === answer;
+    const normalized: string = answer.trim().toLowerCase();
+    const expected: string = question.expected.trim().toLowerCase();
+    return normalized === expected;
 }
 
 /**
- * Return true if the provided answer is a valid option for the question.
- * For short_answer_question, any answer is valid. For multiple_choice_question,
- * only an exact match of an option is valid.
+ * Check if an answer is valid.
  */
 export function isValid(question: Question, answer: string): boolean {
     if (question.type === "short_answer_question") {
@@ -45,43 +40,40 @@ export function isValid(question: Question, answer: string): boolean {
 }
 
 /**
- * Return a short form string of the question: "id: first 10 chars of name".
+ * Return a short form string "id: first 10 chars of name".
  */
 export function toShortForm(question: Question): string {
     return `${question.id}: ${question.name.slice(0, 10)}`;
 }
 
 /**
- * Return a markdown representation of the question.
- * Short answer questions are just "# name\nbody"
- * Multiple choice questions list options prefixed by "- ".
+ * Markdown representation of a question.
  */
 export function toMarkdown(question: Question): string {
-    const base = `# ${question.name}\n${question.body}`;
+    let result: string = `# ${question.name}\n${question.body}`;
     if (question.type === "multiple_choice_question") {
-        const options = question.options.map((opt) => `- ${opt}`).join("\n");
-        return `${base}\n${options}`;
+        const opts: string = question.options.map((o: string) => `- ${o}`).join("\n");
+        result += `\n${opts}`;
     }
-    return base;
+    return result;
 }
 
 /**
- * Return a copy of the question with a new name.
+ * Rename a question.
  */
 export function renameQuestion(question: Question, newName: string): Question {
     return { ...question, name: newName };
 }
 
 /**
- * Return a copy of the question with the published field toggled.
+ * Toggle publish status.
  */
 export function publishQuestion(question: Question): Question {
     return { ...question, published: !question.published };
 }
 
 /**
- * Return a copy of the question with a new id, name prefixed with "Copy of ",
- * published set to false.
+ * Duplicate a question with a new id and reset published to false.
  */
 export function duplicateQuestion(newId: number, question: Question): Question {
     return {
@@ -89,21 +81,19 @@ export function duplicateQuestion(newId: number, question: Question): Question {
         id: newId,
         name: `Copy of ${question.name}`,
         published: false,
+        options: [...question.options],
     };
 }
 
 /**
- * Return a copy of the question with a new option added to the end of options.
+ * Add an option to a question.
  */
 export function addOption(question: Question, option: string): Question {
     return { ...question, options: [...question.options, option] };
 }
 
 /**
- * Merge two questions into a new question with the given id and name.
- * - body, type, options, expected come from contentQuestion
- * - points come from pointsQuestion
- * - published is always false
+ * Merge two questions.
  */
 export function mergeQuestion(
     id: number,
@@ -121,20 +111,4 @@ export function mergeQuestion(
         points: pointsQuestion.points,
         published: false,
     };
-}
-
-/**
- * Safe JSON parse utility to avoid linting issues with `unknown` error type.
- */
-export function safeParse<T>(text: string): T | null {
-    try {
-        return JSON.parse(text) as T;
-    } catch (err: unknown) {
-        if (err instanceof Error) {
-            console.error("JSON parse error:", err.message);
-        } else {
-            console.error("Unknown error during JSON parse");
-        }
-        return null;
-    }
 }
