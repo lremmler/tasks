@@ -26,9 +26,8 @@ export function makeBlankQuestion(
 export function isCorrect(question: Question, answer: string): boolean {
     if (question.type === "short_answer_question") {
         return question.expected.trim().toLowerCase() === answer.trim().toLowerCase();
-    } else {
-        return question.expected === answer;
     }
+    return question.expected === answer;
 }
 
 /**
@@ -38,6 +37,7 @@ export function isValid(question: Question, answer: string): boolean {
     if (question.type === "short_answer_question") {
         return true;
     }
+    // options is always a string[], so no unsafe array
     return question.options.includes(answer);
 }
 
@@ -55,10 +55,9 @@ export function toMarkdown(question: Question): string {
     const header = `# ${question.name}`;
     if (question.type === "short_answer_question") {
         return `${header}\n${question.body}`;
-    } else {
-        const options = question.options.map((opt: string): string => `- ${opt}`).join("\n");
-        return `${header}\n${question.body}\n${options}`;
     }
+    const options: string = question.options.map((opt: string): string => `- ${opt}`).join("\n");
+    return `${header}\n${question.body}\n${options}`;
 }
 
 /**
@@ -92,10 +91,8 @@ export function duplicateQuestion(newId: number, question: Question): Question {
  */
 export function addOption(question: Question, option: string): Question {
     if (question.type === "multiple_choice_question") {
-        return {
-            ...question,
-            options: [...question.options, option],
-        };
+        const newOptions: string[] = [...question.options, option];
+        return { ...question, options: newOptions };
     }
     return { ...question };
 }
@@ -111,12 +108,13 @@ export function mergeQuestion(
     contentQuestion: Question,
     pointsQuestion: Question,
 ): Question {
+    const mergedOptions: string[] = [...contentQuestion.options];
     return {
         id,
         name,
         body: contentQuestion.body,
         type: contentQuestion.type,
-        options: [...contentQuestion.options],
+        options: mergedOptions,
         expected: contentQuestion.expected,
         points: pointsQuestion.points,
         published: false,
