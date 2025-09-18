@@ -1,7 +1,7 @@
 import { Question } from "./interfaces/question";
 
 /**
- * Make a blank question with the given id, name, and type.
+ * Make a blank question given an id, name, and type.
  */
 export function makeBlankQuestion(
     id: number,
@@ -21,18 +21,18 @@ export function makeBlankQuestion(
 }
 
 /**
- * Check if an answer is correct.
+ * Check if an answer is correct for a given question.
  */
 export function isCorrect(question: Question, answer: string): boolean {
-    const normalized: string = answer.trim().toLowerCase();
     if (question.type === "short_answer_question") {
-        return question.expected.trim().toLowerCase() === normalized;
+        return question.expected.trim().toLowerCase() === answer.trim().toLowerCase();
+    } else {
+        return question.expected === answer;
     }
-    return question.expected === answer;
 }
 
 /**
- * Check if an answer is valid.
+ * Check if an answer is valid for a given question.
  */
 export function isValid(question: Question, answer: string): boolean {
     if (question.type === "short_answer_question") {
@@ -42,62 +42,68 @@ export function isValid(question: Question, answer: string): boolean {
 }
 
 /**
- * Return a short form string "id: first 10 chars of name".
+ * Convert a question into its short form string.
  */
 export function toShortForm(question: Question): string {
-    return `${question.id}: ${question.name.slice(0, 10)}`;
+    return `${question.id}: ${question.name.substring(0, 10)}`;
 }
 
 /**
- * Markdown representation of a question.
+ * Convert a question into a Markdown string.
  */
 export function toMarkdown(question: Question): string {
-    let result: string = `# ${question.name}\n${question.body}`;
-    if (question.type === "multiple_choice_question") {
-        const opts: string = question.options.map((o: string) => `- ${o}`).join("\n");
-        result += `\n${opts}`;
+    const header = `# ${question.name}`;
+    if (question.type === "short_answer_question") {
+        return `${header}\n${question.body}`;
+    } else {
+        const options = question.options.map((opt: string): string => `- ${opt}`).join("\n");
+        return `${header}\n${question.body}\n${options}`;
     }
-    return result;
 }
 
 /**
- * Rename a question (immutable).
+ * Create a new version of the question with a different name.
  */
 export function renameQuestion(question: Question, newName: string): Question {
     return { ...question, name: newName };
 }
 
 /**
- * Toggle publish status (immutable).
+ * Publish/unpublish a question (toggle published).
  */
 export function publishQuestion(question: Question): Question {
     return { ...question, published: !question.published };
 }
 
 /**
- * Duplicate a question with a new id and reset published to false.
+ * Duplicate a question, copying all details but changing id and name.
  */
 export function duplicateQuestion(newId: number, question: Question): Question {
-    const copiedOptions: string[] = [...question.options];
     return {
         ...question,
         id: newId,
         name: `Copy of ${question.name}`,
         published: false,
-        options: copiedOptions,
     };
 }
 
 /**
- * Add an option to a multiple-choice question.
+ * Add an option to a multiple choice question.
  */
 export function addOption(question: Question, option: string): Question {
-    const safeOptions: string[] = [...question.options, option];
-    return { ...question, options: safeOptions };
+    if (question.type === "multiple_choice_question") {
+        return {
+            ...question,
+            options: [...question.options, option],
+        };
+    }
+    return { ...question };
 }
 
 /**
- * Merge two questions: use content from the first, points from the second.
+ * Merge two questions into one.
+ * - Body and expected come from contentQuestion
+ * - Points come from pointsQuestion
  */
 export function mergeQuestion(
     id: number,
@@ -105,13 +111,12 @@ export function mergeQuestion(
     contentQuestion: Question,
     pointsQuestion: Question,
 ): Question {
-    const safeOptions: string[] = [...contentQuestion.options];
     return {
         id,
         name,
         body: contentQuestion.body,
         type: contentQuestion.type,
-        options: safeOptions,
+        options: [...contentQuestion.options],
         expected: contentQuestion.expected,
         points: pointsQuestion.points,
         published: false,
