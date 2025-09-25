@@ -1,7 +1,5 @@
 import { Question } from "./interfaces/question";
-import questions from "./questions.json";
+import { questionsJson } from "./questions.json";
 
-// Strongly type the imported questions
-const typedQuestions: Question[] = questions;
-
-export default typedQuestions;
+// Strong typing: always a Question[]
+export const typedQuestions: Question[] = [...questionsJson];
