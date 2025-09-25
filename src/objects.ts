@@ -6,9 +6,9 @@ import { Question, QuestionType } from "./interfaces/question";
 export function makeBlankQuestion(
     id: number,
     name: string,
-    type: QuestionType,
+    type: QuestionType
 ): Question {
-    return {
+    const question: Question = {
         id,
         name,
         type,
@@ -16,12 +16,13 @@ export function makeBlankQuestion(
         expected: "",
         options: [],
         points: 1,
-        published: false,
+        published: false
     };
+    return question;
 }
 
 /**
- * Returns whether the `answer` is correct (case- and space-insensitive).
+ * Check if an answer is correct (ignoring case + trimming whitespace).
  */
 export function isCorrect(question: Question, answer: string): boolean {
     const cleanAnswer: string = answer.trim().toLowerCase();
@@ -30,7 +31,8 @@ export function isCorrect(question: Question, answer: string): boolean {
 }
 
 /**
- * Returns whether the `answer` is valid for the given question type.
+ * Validate an answer: any string for short_answer_question, or must match
+ * one of the options for multiple_choice_question.
  */
 export function isValid(question: Question, answer: string): boolean {
     if (question.type === "short_answer_question") {
@@ -40,7 +42,7 @@ export function isValid(question: Question, answer: string): boolean {
 }
 
 /**
- * Produces a short string representation of the question.
+ * Short form: "id: first10charsOfName".
  */
 export function toShortForm(question: Question): string {
     const shortName: string = question.name.substring(0, 10);
@@ -48,7 +50,7 @@ export function toShortForm(question: Question): string {
 }
 
 /**
- * Produces a Markdown representation of the question.
+ * Markdown format for a question.
  */
 export function toMarkdown(question: Question): string {
     let result: string = `# ${question.name}\n${question.body}`;
@@ -61,62 +63,67 @@ export function toMarkdown(question: Question): string {
 }
 
 /**
- * Return a copy of the question with a new name.
+ * Rename a question (new object).
  */
 export function renameQuestion(question: Question, newName: string): Question {
     return {
         ...question,
         name: newName,
+        options: [...question.options]
     };
 }
 
 /**
- * Return a copy of the question with the `published` field inverted.
+ * Invert published status.
  */
 export function publishQuestion(question: Question): Question {
     return {
         ...question,
-        published: !question.published,
+        options: [...question.options],
+        published: !question.published
     };
 }
 
 /**
- * Create a duplicate of the question, with a new `id`, updated name,
- * and `published` set to false.
+ * Duplicate a question with new id, name prefixed by "Copy of", and reset published.
  */
 export function duplicateQuestion(id: number, oldQuestion: Question): Question {
     return {
         ...oldQuestion,
         id,
         name: `Copy of ${oldQuestion.name}`,
-        published: false,
+        options: [...oldQuestion.options],
+        published: false
     };
 }
 
 /**
- * Return a copy of the question with an extra option added.
+ * Add a new option (copy options array).
  */
 export function addOption(question: Question, newOption: string): Question {
     return {
         ...question,
-        options: [...question.options, newOption],
+        options: [...question.options, newOption]
     };
 }
 
 /**
- * Merge two questions into a new one with a provided `id` and `name`.
+ * Merge body/type/options/expected from contentQuestion with points from other.
  */
 export function mergeQuestion(
     id: number,
     name: string,
     contentQuestion: Question,
-    { points }: { points: number },
+    { points }: { points: number }
 ): Question {
     return {
-        ...contentQuestion,
         id,
         name,
+        type: contentQuestion.type,
+        body: contentQuestion.body,
+        expected: contentQuestion.expected,
+        options: [...contentQuestion.options],
         points,
-        published: false,
+        published: false
     };
 }
