@@ -1,3 +1,4 @@
+/*
 import questionsData from "./questions.json";
 import { Question } from "./interfaces/question";
 
@@ -11,3 +12,4 @@ export const questions: Question[] = questionsData.map((q: Question) => ({
     points: q.points,
     published: q.published,
 }));
+*/
