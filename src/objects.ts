@@ -1,14 +1,14 @@
 import { Question, QuestionType } from "./interfaces/question";
 
 /**
- * Create a new blank question with the given `id`, `name`, and `type`.
+ * Create a new blank question
  */
 export function makeBlankQuestion(
     id: number,
     name: string,
-    type: QuestionType
+    type: QuestionType,
 ): Question {
-    const question: Question = {
+    return {
         id,
         name,
         type,
@@ -16,105 +16,91 @@ export function makeBlankQuestion(
         expected: "",
         options: [],
         points: 1,
-        published: false
+        published: false,
     };
-    return question;
 }
 
 /**
- * Check if an answer is correct (ignoring case + trimming whitespace).
+ * Check if an answer is correct (ignoring case and whitespace)
  */
 export function isCorrect(question: Question, answer: string): boolean {
-    const cleanAnswer: string = answer.trim().toLowerCase();
-    const cleanExpected: string = question.expected.trim().toLowerCase();
-    return cleanAnswer === cleanExpected;
+    return (
+        answer.trim().toLowerCase() === question.expected.trim().toLowerCase()
+    );
 }
 
 /**
- * Validate an answer: any string for short_answer_question, or must match
- * one of the options for multiple_choice_question.
+ * Check if an answer is valid for a question
  */
 export function isValid(question: Question, answer: string): boolean {
-    if (question.type === "short_answer_question") {
-        return true;
-    }
-    return question.options.includes(answer);
+    return question.type === "short_answer_question"
+        ? true
+        : question.options.includes(answer);
 }
 
 /**
- * Short form: "id: first10charsOfName".
+ * Short form of a question
  */
 export function toShortForm(question: Question): string {
-    const shortName: string = question.name.substring(0, 10);
-    return `${question.id}: ${shortName}`;
+    return `${question.id}: ${question.name.substring(0, 10)}`;
 }
 
 /**
- * Markdown format for a question.
+ * Markdown representation of a question
  */
 export function toMarkdown(question: Question): string {
-    let result: string = `# ${question.name}\n${question.body}`;
+    let result = `# ${question.name}\n${question.body}`;
     if (question.type === "multiple_choice_question") {
-        for (const option of question.options) {
-            result += `\n- ${option}`;
-        }
+        result += question.options.map((opt: string) => `\n- ${opt}`).join("");
     }
     return result;
 }
 
 /**
- * Rename a question (new object).
+ * Return a renamed version of the question
  */
-export function renameQuestion(question: Question, newName: string): Question {
-    return {
-        ...question,
-        name: newName,
-        options: [...question.options]
-    };
+export function renameQuestion(
+    question: Question,
+    newName: string,
+): Question {
+    return { ...question, name: newName, options: [...question.options] };
 }
 
 /**
- * Invert published status.
+ * Return a version with published inverted
  */
 export function publishQuestion(question: Question): Question {
-    return {
-        ...question,
-        options: [...question.options],
-        published: !question.published
-    };
+    return { ...question, published: !question.published, options: [...question.options] };
 }
 
 /**
- * Duplicate a question with new id, name prefixed by "Copy of", and reset published.
+ * Duplicate a question with a new id
  */
 export function duplicateQuestion(id: number, oldQuestion: Question): Question {
     return {
         ...oldQuestion,
         id,
         name: `Copy of ${oldQuestion.name}`,
+        published: false,
         options: [...oldQuestion.options],
-        published: false
     };
 }
 
 /**
- * Add a new option (copy options array).
+ * Add an option to a question
  */
 export function addOption(question: Question, newOption: string): Question {
-    return {
-        ...question,
-        options: [...question.options, newOption]
-    };
+    return { ...question, options: [...question.options, newOption] };
 }
 
 /**
- * Merge body/type/options/expected from contentQuestion with points from other.
+ * Merge two questions into a new one
  */
 export function mergeQuestion(
     id: number,
     name: string,
     contentQuestion: Question,
-    { points }: { points: number }
+    { points }: { points: number },
 ): Question {
     return {
         id,
@@ -124,6 +110,6 @@ export function mergeQuestion(
         expected: contentQuestion.expected,
         options: [...contentQuestion.options],
         points,
-        published: false
+        published: false,
     };
 }
