@@ -1,12 +1,12 @@
 import { Question, QuestionType } from "./interfaces/question";
 
 /**
- * Create a new blank question
+ * Create a new blank question.
  */
 export function makeBlankQuestion(
     id: number,
     name: string,
-    type: QuestionType,
+    type: QuestionType
 ): Question {
     return {
         id,
@@ -14,67 +14,77 @@ export function makeBlankQuestion(
         type,
         body: "",
         expected: "",
-        options: [],
+        options: [] as string[],
         points: 1,
         published: false,
     };
 }
 
 /**
- * Check if an answer is correct (ignoring case and whitespace)
+ * Return whether `answer` matches expected, ignoring whitespace/case.
  */
 export function isCorrect(question: Question, answer: string): boolean {
-    return (
-        answer.trim().toLowerCase() === question.expected.trim().toLowerCase()
-    );
+    const cleanAnswer: string = answer.trim().toLowerCase();
+    const cleanExpected: string = question.expected.trim().toLowerCase();
+    return cleanAnswer === cleanExpected;
 }
 
 /**
- * Check if an answer is valid for a question
+ * Return whether `answer` is valid for the question.
  */
 export function isValid(question: Question, answer: string): boolean {
-    return question.type === "short_answer_question"
-        ? true
-        : question.options.includes(answer);
+    if (question.type === "short_answer_question") {
+        return true;
+    }
+    return question.options.includes(answer);
 }
 
 /**
- * Short form of a question
+ * Short string representation of a question.
  */
 export function toShortForm(question: Question): string {
-    return `${question.id}: ${question.name.substring(0, 10)}`;
+    const shortName: string = question.name.substring(0, 10);
+    return `${question.id}: ${shortName}`;
 }
 
 /**
- * Markdown representation of a question
+ * Markdown representation of a question.
  */
 export function toMarkdown(question: Question): string {
-    let result = `# ${question.name}\n${question.body}`;
+    let result: string = `# ${question.name}\n${question.body}`;
     if (question.type === "multiple_choice_question") {
-        result += question.options.map((opt: string) => `\n- ${opt}`).join("");
+        const lines: string[] = question.options.map(
+            (opt: string): string => `- ${opt}`
+        );
+        result += `\n${lines.join("\n")}`;
     }
     return result;
 }
 
 /**
- * Return a renamed version of the question
+ * Return a copy of the question with a new name.
  */
-export function renameQuestion(
-    question: Question,
-    newName: string,
-): Question {
-    return { ...question, name: newName, options: [...question.options] };
+export function renameQuestion(question: Question, newName: string): Question {
+    return {
+        ...question,
+        name: newName,
+        options: [...question.options],
+    };
 }
 
 /**
- * Return a version with published inverted
+ * Return a copy of the question with published flipped.
  */
 export function publishQuestion(question: Question): Question {
-    return { ...question, published: !question.published, options: [...question.options] };
+    return {
+        ...question,
+        published: !question.published,
+        options: [...question.options],
+    };
 }
 
 /**
- * Duplicate a question with a new id
+ * Duplicate a question with a new id and reset published.
  */
 export function duplicateQuestion(id: number, oldQuestion: Question): Question {
     return {
@@ -87,20 +97,24 @@ export function duplicateQuestion(id: number, oldQuestion: Question): Question {
 }
 
 /**
- * Add an option to a question
+ * Add a new option to a question.
  */
 export function addOption(question: Question, newOption: string): Question {
-    return { ...question, options: [...question.options, newOption] };
+    const newOptions: string[] = [...question.options, newOption];
+    return {
+        ...question,
+        options: newOptions,
+    };
 }
 
 /**
- * Merge two questions into a new one
+ * Merge two questions into one.
  */
 export function mergeQuestion(
     id: number,
     name: string,
     contentQuestion: Question,
-    { points }: { points: number },
+    { points }: { points: number }
 ): Question {
     return {
         id,
