@@ -1,6 +1,5 @@
 import { Question } from "./interfaces/question";
-import rawQuestions from "./questions.json";
+import { sampleQuestions } from "./sampleQuestions";
 
-const questions: Question[] = rawQuestions as Question[];
-
-export default questions;
+// Explicitly typed array of Question objects
+export const questionsJson: Question[] = [...sampleQuestions];
