@@ -10,7 +10,7 @@ export function makeBlankQuestion(
     name: string,
     type: QuestionType
 ): Question {
-    return {
+    const newQuestion: Question = {
         id,
         name,
         type,
@@ -20,6 +20,7 @@ export function makeBlankQuestion(
         points: 1,
         published: false
     };
+    return newQuestion;
 }
 
 /**
@@ -30,8 +31,8 @@ export function makeBlankQuestion(
  * HINT: Look up the `trim` and `toLowerCase` functions.
  */
 export function isCorrect(question: Question, answer: string): boolean {
-    const normalizedAnswer = answer.trim().toLowerCase();
-    const normalizedExpected = question.expected.trim().toLowerCase();
+    const normalizedAnswer: string = answer.trim().toLowerCase();
+    const normalizedExpected: string = question.expected.trim().toLowerCase();
     return normalizedAnswer === normalizedExpected;
 }
 
@@ -57,7 +58,7 @@ export function isValid(question: Question, answer: string): boolean {
  * name "My First Question" would become "9: My First Q".
  */
 export function toShortForm(question: Question): string {
-    const truncatedName = question.name.substring(0, 10);
+    const truncatedName: string = question.name.substring(0, 10);
     return `${question.id}: ${truncatedName}`;
 }
 
@@ -79,15 +80,15 @@ export function toShortForm(question: Question): string {
  * Check the unit tests for more examples of what this looks like!
  */
 export function toMarkdown(question: Question): string {
-    let result = `# ${question.name}\n${question.body}`;
+    const lines: string[] = [`# ${question.name}`, question.body];
     
     if (question.type === "multiple_choice_question") {
         for (const option of question.options) {
-            result += `\n- ${option}`;
+            lines.push(`- ${option}`);
         }
     }
     
-    return result;
+    return lines.join("\n");
 }
 
 /**
@@ -139,7 +140,7 @@ export function duplicateQuestion(id: number, oldQuestion: Question): Question {
  * Check out the subsection about "Nested Fields" for more information.
  */
 export function addOption(question: Question, newOption: string): Question {
-    const newOptions = [...question.options, newOption];
+    const newOptions: string[] = [...question.options, newOption];
     const newQuestion: Question = {
         ...question,
         options: newOptions
@@ -166,7 +167,7 @@ export function mergeQuestion(
         name,
         body: contentQuestion.body,
         type: contentQuestion.type,
-        options: [...contentQuestion.options],
+        options: [...contentQuestion.options], // Create a new array copy
         expected: contentQuestion.expected,
         points,
         published: false
