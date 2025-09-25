@@ -3,7 +3,7 @@ import { Question, QuestionType } from "./interfaces/question";
 export function makeBlankQuestion(
     id: number,
     name: string,
-    type: QuestionType,
+    type: QuestionType
 ): Question {
     return {
         id,
@@ -22,7 +22,10 @@ export function isCorrect(question: Question, answer: string): boolean {
 }
 
 export function isValid(question: Question, answer: string): boolean {
-    return question.type === "short_answer_question" || question.options.includes(answer);
+    if (question.type === "short_answer_question") {
+        return true;
+    }
+    return question.options.includes(answer);
 }
 
 export function toShortForm(question: Question): string {
@@ -30,11 +33,13 @@ export function toShortForm(question: Question): string {
 }
 
 export function toMarkdown(question: Question): string {
-    let result = `# ${question.name}\n${question.body}`;
+    let markdown = `# ${question.name}\n${question.body}`;
     if (question.type === "multiple_choice_question") {
-        question.options.forEach(option => result += `\n- ${option}`);
+        for (const option of question.options) {
+            markdown += `\n- ${option}`;
+        }
     }
-    return result;
+    return markdown;
 }
 
 export function renameQuestion(question: Question, newName: string): Question {
@@ -46,7 +51,13 @@ export function publishQuestion(question: Question): Question {
 }
 
 export function duplicateQuestion(id: number, oldQuestion: Question): Question {
-    return { ...oldQuestion, id, name: `Copy of ${oldQuestion.name}`, published: false, options: [...oldQuestion.options] };
+    return {
+        ...oldQuestion,
+        id,
+        name: `Copy of ${oldQuestion.name}`,
+        published: false,
+        options: [...oldQuestion.options],
+    };
 }
 
 export function addOption(question: Question, newOption: string): Question {
@@ -57,7 +68,16 @@ export function mergeQuestion(
     id: number,
     name: string,
     contentQuestion: Question,
-    { points }: { points: number },
+    { points }: { points: number }
 ): Question {
-    return { ...contentQuestion, id, name, points, published: false, options: [...contentQuestion.options] };
+    return {
+        id,
+        name,
+        type: contentQuestion.type,
+        body: contentQuestion.body,
+        expected: contentQuestion.expected,
+        options: [...contentQuestion.options],
+        points,
+        published: false,
+    };
 }
