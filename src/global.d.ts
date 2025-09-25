@@ -1,4 +1,6 @@
+import type { Question } from "./interfaces/question";
+
 declare module "*.json" {
-    const value: unknown;
+    const value: Question[];
     export default value;
 }
