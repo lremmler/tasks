@@ -10,17 +10,17 @@ export function makeBlankQuestion(
     name: string,
     type: QuestionType
 ): Question {
-    const newQuestion: Question = {
-        id: id,
-        name: name,
-        type: type,
+    const blankQuestion: Question = {
+        id,
+        name,
+        type,
         body: "",
         expected: "",
         options: [],
         points: 1,
         published: false
     };
-    return newQuestion;
+    return blankQuestion;
 }
 
 /**
@@ -33,8 +33,8 @@ export function makeBlankQuestion(
 export function isCorrect(question: Question, answer: string): boolean {
     const normalizedAnswer: string = answer.trim().toLowerCase();
     const normalizedExpected: string = question.expected.trim().toLowerCase();
-    const isAnswerCorrect: boolean = normalizedAnswer === normalizedExpected;
-    return isAnswerCorrect;
+    const isCorrectAnswer: boolean = normalizedAnswer === normalizedExpected;
+    return isCorrectAnswer;
 }
 
 /**
@@ -47,8 +47,8 @@ export function isValid(question: Question, answer: string): boolean {
     if (question.type === "short_answer_question") {
         return true;
     }
-    const isValidAnswer: boolean = question.options.includes(answer);
-    return isValidAnswer;
+    const isValidChoice: boolean = question.options.includes(answer);
+    return isValidChoice;
 }
 
 /**
@@ -58,9 +58,9 @@ export function isValid(question: Question, answer: string): boolean {
  * name "My First Question" would become "9: My First Q".
  */
 export function toShortForm(question: Question): string {
-    const shortName: string = question.name.slice(0, 10);
-    const shortFormResult: string = `${question.id}: ${shortName}`;
-    return shortFormResult;
+    const truncatedName: string = question.name.substring(0, 10);
+    const shortForm: string = `${question.id}: ${truncatedName}`;
+    return shortForm;
 }
 
 /**
@@ -81,16 +81,18 @@ export function toShortForm(question: Question): string {
  * Check the unit tests for more examples of what this looks like!
  */
 export function toMarkdown(question: Question): string {
-    const lines: string[] = [`# ${question.name}`, question.body];
+    const header: string = `# ${question.name}`;
+    const bodyLine: string = question.body;
+    const lines: string[] = [header, bodyLine];
     
     if (question.type === "multiple_choice_question") {
-        for (const option of question.options) {
+        question.options.forEach((option: string): void => {
             lines.push(`- ${option}`);
-        }
+        });
     }
     
-    const markdownResult: string = lines.join("\n");
-    return markdownResult;
+    const markdown: string = lines.join("\n");
+    return markdown;
 }
 
 /**
@@ -98,11 +100,11 @@ export function toMarkdown(question: Question): string {
  * `newName`.
  */
 export function renameQuestion(question: Question, newName: string): Question {
-    const renamed: Question = { 
-        ...question, 
-        name: newName 
+    const renamedQuestion: Question = {
+        ...question,
+        name: newName
     };
-    return renamed;
+    return renamedQuestion;
 }
 
 /**
@@ -111,11 +113,11 @@ export function renameQuestion(question: Question, newName: string): Question {
  * published; if it was published, now it should be not published.
  */
 export function publishQuestion(question: Question): Question {
-    const published: Question = { 
-        ...question, 
-        published: !question.published 
+    const publishedQuestion: Question = {
+        ...question,
+        published: !question.published
     };
-    return published;
+    return publishedQuestion;
 }
 
 /**
@@ -125,17 +127,13 @@ export function publishQuestion(question: Question): Question {
  * The `published` field should be reset to false.
  */
 export function duplicateQuestion(id: number, oldQuestion: Question): Question {
-    const duplicated: Question = {
-        id: id,
+    const duplicatedQuestion: Question = {
+        ...oldQuestion,
+        id,
         name: `Copy of ${oldQuestion.name}`,
-        body: oldQuestion.body,
-        type: oldQuestion.type,
-        options: [...oldQuestion.options],
-        expected: oldQuestion.expected,
-        points: oldQuestion.points,
         published: false
     };
-    return duplicated;
+    return duplicatedQuestion;
 }
 
 /**
@@ -147,11 +145,11 @@ export function duplicateQuestion(id: number, oldQuestion: Question): Question {
  */
 export function addOption(question: Question, newOption: string): Question {
     const newOptions: string[] = [...question.options, newOption];
-    const withNewOption: Question = { 
-        ...question, 
-        options: newOptions 
+    const questionWithOption: Question = {
+        ...question,
+        options: newOptions
     };
-    return withNewOption;
+    return questionWithOption;
 }
 
 /**
@@ -168,15 +166,15 @@ export function mergeQuestion(
     contentQuestion: Question,
     { points }: { points: number }
 ): Question {
-    const merged: Question = {
-        id: id,
-        name: name,
+    const mergedQuestion: Question = {
+        id,
+        name,
         body: contentQuestion.body,
         type: contentQuestion.type,
         options: [...contentQuestion.options],
         expected: contentQuestion.expected,
-        points: points,
+        points,
         published: false
     };
-    return merged;
+    return mergedQuestion;
 }
