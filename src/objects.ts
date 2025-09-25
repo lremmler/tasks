@@ -126,9 +126,13 @@ export function publishQuestion(question: Question): Question {
  */
 export function duplicateQuestion(id: number, oldQuestion: Question): Question {
     const duplicated: Question = {
-        ...oldQuestion,
         id: id,
         name: `Copy of ${oldQuestion.name}`,
+        body: oldQuestion.body,
+        type: oldQuestion.type,
+        options: [...oldQuestion.options],
+        expected: oldQuestion.expected,
+        points: oldQuestion.points,
         published: false
     };
     return duplicated;
