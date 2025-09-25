@@ -1,9 +1,5 @@
-import type { Question } from "./interfaces/question";
-
-declare global {
-    interface Window {
-        questions: Question[];
-    }
+declare module "*.json" {
+    import { Question } from "./interfaces/question";
+    const value: Question[];
+    export default value;
 }
-
-export {};
