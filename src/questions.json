@@ -1,22 +1,22 @@
 [
-  {
-    "id": 1,
-    "name": "What is 2 + 2?",
-    "type": "short_answer_question",
-    "body": "Provide a short answer.",
-    "expected": "4",
-    "options": [],
-    "points": 1,
-    "published": true
-  },
-  {
-    "id": 2,
-    "name": "Favorite color?",
-    "type": "multiple_choice_question",
-    "body": "Choose one option.",
-    "expected": "Blue",
-    "options": ["Red", "Blue", "Green"],
-    "points": 2,
-    "published": false
-  }
+    {
+        "id": 1,
+        "name": "Sample Question 1",
+        "type": "short_answer_question",
+        "body": "What is 2 + 2?",
+        "expected": "4",
+        "options": [],
+        "points": 1,
+        "published": false
+    },
+    {
+        "id": 2,
+        "name": "Sample Question 2",
+        "type": "multiple_choice_question",
+        "body": "Select the correct option.",
+        "expected": "B",
+        "options": ["A", "B", "C"],
+        "points": 2,
+        "published": true
+    }
 ]
