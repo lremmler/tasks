@@ -1,4 +1,13 @@
+import questionsData from "./questions.json";
 import { Question } from "./interfaces/question";
-import { questions } from "./questions.json";
 
-export const typedQuestions: Question[] = [...questions];
+export const questions: Question[] = questionsData.map((q) => ({
+    id: q.id,
+    name: q.name,
+    type: q.type,
+    body: q.body,
+    expected: q.expected,
+    options: [...q.options],
+    points: q.points,
+    published: q.published,
+}));
