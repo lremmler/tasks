@@ -1,6 +1,5 @@
-import { BLANK_QUESTIONS, SIMPLE_QUESTIONS } from "../typedQuestions";
+import { Question } from "./interfaces/question";
+import rawQuestions from "./questions.json";
 
-export default {
-    BLANK_QUESTIONS,
-    SIMPLE_QUESTIONS
-};
+// Explicitly cast JSON to Question[]
+export const questions: Question[] = rawQuestions as Question[];
