@@ -1,3 +1,4 @@
+/*
 import questions from "./questions.json";
 import { Question } from "./interfaces/question";
 
@@ -13,3 +14,4 @@ const typedQuestions: Question[] = questions.map((q: Question) => ({
 }));
 
 export default typedQuestions;
+*/
