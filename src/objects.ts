@@ -18,7 +18,9 @@ export function makeBlankQuestion(
 }
 
 export function isCorrect(question: Question, answer: string): boolean {
-    return answer.trim().toLowerCase() === question.expected.trim().toLowerCase();
+    const cleanAnswer: string = answer.trim().toLowerCase();
+    const cleanExpected: string = question.expected.trim().toLowerCase();
+    return cleanAnswer === cleanExpected;
 }
 
 export function isValid(question: Question, answer: string): boolean {
@@ -33,9 +35,10 @@ export function toShortForm(question: Question): string {
 }
 
 export function toMarkdown(question: Question): string {
-    let markdown = `# ${question.name}\n${question.body}`;
+    let markdown: string = `# ${question.name}\n${question.body}`;
     if (question.type === "multiple_choice_question") {
-        for (const option of question.options) {
+        const optionsCopy: string[] = [...question.options];
+        for (const option of optionsCopy) {
             markdown += `\n- ${option}`;
         }
     }
@@ -43,25 +46,23 @@ export function toMarkdown(question: Question): string {
 }
 
 export function renameQuestion(question: Question, newName: string): Question {
-    return { ...question, name: newName, options: [...question.options] };
+    const optionsCopy: string[] = [...question.options];
+    return { ...question, name: newName, options: optionsCopy };
 }
 
 export function publishQuestion(question: Question): Question {
-    return { ...question, published: !question.published, options: [...question.options] };
+    const optionsCopy: string[] = [...question.options];
+    return { ...question, published: !question.published, options: optionsCopy };
 }
 
 export function duplicateQuestion(id: number, oldQuestion: Question): Question {
-    return {
-        ...oldQuestion,
-        id,
-        name: `Copy of ${oldQuestion.name}`,
-        published: false,
-        options: [...oldQuestion.options],
-    };
+    const optionsCopy: string[] = [...oldQuestion.options];
+    return { ...oldQuestion, id, name: `Copy of ${oldQuestion.name}`, published: false, options: optionsCopy };
 }
 
 export function addOption(question: Question, newOption: string): Question {
-    return { ...question, options: [...question.options, newOption] };
+    const optionsCopy: string[] = [...question.options, newOption];
+    return { ...question, options: optionsCopy };
 }
 
 export function mergeQuestion(
@@ -70,13 +71,14 @@ export function mergeQuestion(
     contentQuestion: Question,
     { points }: { points: number }
 ): Question {
+    const optionsCopy: string[] = [...contentQuestion.options];
     return {
         id,
         name,
         type: contentQuestion.type,
         body: contentQuestion.body,
         expected: contentQuestion.expected,
-        options: [...contentQuestion.options],
+        options: optionsCopy,
         points,
         published: false,
     };
