@@ -1,10 +1,10 @@
-declare module "*.json" {
+[
+    declare module "*.json" {
     const value: unknown;
     export default value;
-}
+    }
 
-[
-  {
+    {
     "id": 1,
     "name": "Addition",
     "body": "What is 2+2?",
