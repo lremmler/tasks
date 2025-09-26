@@ -1,6 +1,12 @@
 import React from "react";
 import "./App.css";
 import { Button, Container, Row, Col } from "react-bootstrap";
+import { Counter } from "./components/Counter";
+import { RevealAnswer } from "./components/RevealAnswer";
+import { ChangeType } from "./components/ChangeType";
+import { StartAttempt } from "./components/StartAttempt";
+import { TwoDice } from "./components/TwoDice";
+import { CycleHoliday } from "./components/CycleHoliday";
 
 function App(): React.JSX.Element {
     return (
@@ -53,6 +59,31 @@ function App(): React.JSX.Element {
                     </Col>
                 </Row>
             </Container>
+            
+            {/* Added Components */}
+            <hr />
+            <h2>Counter Component</h2>
+            <Counter />
+            
+            <hr />
+            <h2>Reveal Answer Component</h2>
+            <RevealAnswer />
+            
+            <hr />
+            <h2>Change Type Component</h2>
+            <ChangeType />
+            
+            <hr />
+            <h2>Start Attempt Component</h2>
+            <StartAttempt />
+            
+            <hr />
+            <h2>Two Dice Component</h2>
+            <TwoDice />
+            
+            <hr />
+            <h2>Cycle Holiday Component</h2>
+            <CycleHoliday />
         </div>
     );
 }
