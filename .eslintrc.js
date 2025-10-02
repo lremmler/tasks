@@ -95,5 +95,6 @@ module.exports = {
         // https://typescript-eslint.io/rules/no-unnecessary-condition
         // Disallow conditionals where the type is always truthy or always falsy.
         "@typescript-eslint/no-unnecessary-condition": "error",
+        "testing-library/no-render-in-setup": "off"
     },
 };
