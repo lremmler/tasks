@@ -1,0 +1,16 @@
+{
+    "extends": [
+        "react-app",
+        "react-app/jest"
+    ],
+    "plugins": ["testing-library"],
+    "overrides": [
+        {
+            "files": ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+            "rules": {
+                "testing-library/no-render-in-setup": "off",
+                "testing-library/prefer-screen-queries": "off"
+            }
+        }
+    ]
+}
