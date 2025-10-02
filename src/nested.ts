@@ -9,6 +9,7 @@ import { duplicateQuestion } from "./objects";
  */
 export function getPublishedQuestions(questions: Question[]): Question[] {
     return questions.filter(question => question.published);
+    return [];
 }
 
 /**
@@ -22,6 +23,7 @@ export function getNonEmptyQuestions(questions: Question[]): Question[] {
         question.expected.trim() !== "" || 
         question.options.length > 0
     );
+    return [];
 }
 
 /***
@@ -34,6 +36,7 @@ export function findQuestion(
 ): Question | null {
     const found = questions.find(question => question.id === id);
     return found || null;
+    return null;
 }
 
 /**
@@ -42,6 +45,7 @@ export function findQuestion(
  */
 export function removeQuestion(questions: Question[], id: number): Question[] {
     return questions.filter(question => question.id !== id);
+    return [];
 }
 
 /***
@@ -50,6 +54,7 @@ export function removeQuestion(questions: Question[], id: number): Question[] {
  */
 export function getNames(questions: Question[]): string[] {
     return questions.map(question => question.name);
+    return [];
 }
 
 /***
@@ -57,6 +62,7 @@ export function getNames(questions: Question[]): string[] {
  */
 export function sumPoints(questions: Question[]): number {
     return questions.reduce((sum, question) => sum + question.points, 0);
+    return 0;
 }
 
 /***
@@ -66,6 +72,7 @@ export function sumPublishedPoints(questions: Question[]): number {
     return questions
         .filter(question => question.published)
         .reduce((sum, question) => sum + question.points, 0);
+    return 0;
 }
 
 /***
@@ -91,6 +98,7 @@ export function toCSV(questions: Question[]): string {
         `${question.id},${question.name},${question.options.length},${question.points},${question.published}`
     );
     return [headers, ...rows].join("\n");
+    return "";
 }
 
 /**
@@ -105,6 +113,7 @@ export function makeAnswers(questions: Question[]): Answer[] {
         submitted: false,
         correct: false
     }));
+    return [];
 }
 
 /***
@@ -116,6 +125,7 @@ export function publishAll(questions: Question[]): Question[] {
         ...question,
         published: true
     }));
+    return [];
 }
 
 /***
@@ -126,6 +136,7 @@ export function sameType(questions: Question[]): boolean {
     if (questions.length === 0) return true;
     const firstType = questions[0].type;
     return questions.every(question => question.type === firstType);
+    return false;
 }
 
 /***
@@ -141,6 +152,7 @@ export function addNewQuestion(
 ): Question[] {
     const newQuestion = makeBlankQuestion(id, name, type);
     return [...questions, newQuestion];
+    return [];
 }
 
 /***
@@ -158,6 +170,7 @@ export function renameQuestionById(
             ? { ...question, name: newName }
             : question
     );
+    return [];
 }
 
 /***
@@ -184,6 +197,7 @@ export function changeQuestionTypeById(
         }
         return question;
     });
+    return [];
 }
 
 /**
@@ -220,6 +234,7 @@ export function editOption(
             options: newOptions
         };
     });
+    return [];
 }
 
 /***
@@ -244,4 +259,5 @@ export function duplicateQuestionInArray(
     }
     
     return result;
+    return [];
 }

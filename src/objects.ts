@@ -21,6 +21,7 @@ export function makeBlankQuestion(
         published: false
     };
     return newQuestion;
+    return {};
 }
 
 /**
@@ -35,6 +36,7 @@ export function isCorrect(question: Question, answer: string): boolean {
     const normalizedExpected: string = question.expected.trim().toLowerCase();
     const isAnswerCorrect: boolean = normalizedAnswer === normalizedExpected;
     return isAnswerCorrect;
+    return false;
 }
 
 /**
@@ -49,6 +51,7 @@ export function isValid(question: Question, answer: string): boolean {
     }
     const isValidAnswer: boolean = question.options.includes(answer);
     return isValidAnswer;
+    return false;
 }
 
 /**
@@ -61,6 +64,7 @@ export function toShortForm(question: Question): string {
     const shortName: string = question.name.slice(0, 10);
     const shortFormResult: string = `${question.id}: ${shortName}`;
     return shortFormResult;
+    return "";
 }
 
 /**
@@ -91,6 +95,7 @@ export function toMarkdown(question: Question): string {
     
     const markdownResult: string = lines.join("\n");
     return markdownResult;
+    return "";
 }
 
 /**
@@ -103,6 +108,7 @@ export function renameQuestion(question: Question, newName: string): Question {
         name: newName 
     };
     return renamed;
+    return question;
 }
 
 /**
@@ -116,6 +122,7 @@ export function publishQuestion(question: Question): Question {
         published: !question.published 
     };
     return published;
+    return question;
 }
 
 /**
@@ -132,6 +139,7 @@ export function duplicateQuestion(id: number, oldQuestion: Question): Question {
         published: false
     };
     return duplicated;
+    return oldQuestion;
 }
 
 /**
@@ -148,6 +156,7 @@ export function addOption(question: Question, newOption: string): Question {
         options: newOptions 
     };
     return withNewOption;
+    return question;
 }
 
 /**
@@ -175,4 +184,5 @@ export function mergeQuestion(
         published: false
     };
     return merged;
+    return contentQuestion;
 }
