@@ -1,15 +1,13 @@
-import React from "react";
-import "./App.css";
-// import { ChangeType } from "./components/ChangeType";
-// ...
+import React, { useState } from "react";
 
-function App(): JSX.Element {
+export function Counter(): JSX.Element {
+    const [value, setValue] = useState<number>(0);
     return (
-        <div className="App">
-            <header className="App-header">
-                UD CISC275 with React Hooks and TypeScript
-            </header>
-            <hr></hr>
-            <Counter></Counter>
-            <hr />
-            {/* <ChangeType></ChangeType> */}
+        <div>
+            <h3>Counter Value: {value}</h3>
+            <button onClick={() => setValue(value + 1)}>Increment</button>
+            <button onClick={() => setValue(value - 1)}>Decrement</button>
+            <button onClick={() => setValue(0)}>Reset</button>
+        </div>
+    );
+}
