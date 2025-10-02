@@ -19,10 +19,10 @@ function App(): React.JSX.Element {
                 Edit <code>src/App.tsx</code> and save. This page will
                 automatically reload.
             </p>
-            <h1>Luke Remmler App</h1>;
+            <h1>Luke Remmler App</h1>
             <img
                 src="../assets/images/pet-ada.jpg"
-                alt="A picture of Dr. Bart's dog Ada"
+                alt="Dr. Bart's dog Ada"
             />
             Unordered List:
             <ul>
