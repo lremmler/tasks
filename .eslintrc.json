@@ -3,13 +3,15 @@
         "react-app",
         "react-app/jest"
     ],
-    "plugins": ["testing-library"],
+    "rules": {
+        "testing-library/no-render-in-setup": "off"
+    },
     "overrides": [
         {
-            "files": ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+            "files": ["**/*.test.tsx", "**/*.test.ts"],
             "rules": {
                 "testing-library/no-render-in-setup": "off",
-                "testing-library/prefer-screen-queries": "off"
+                "eqeqeq": "off"
             }
         }
     ]
